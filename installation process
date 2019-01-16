@@ -1,0 +1,17 @@
+instalirati xmpp server
+konfigurirati xmpp server
+Instalirati python3
+instalirati pip ako vec nije dosao s pythonom
+Instalirati spade i chatterbot (pip install)
+
+NLTK
+instalirati nltk (pip install)
+(u pythonu) nltk.download('punkt')
+(u pythonu) nltk.download('averaged_perceptron_tagger')
+(u pythonu) nltk.download('maxent_ne_chunker')
+#(u pythonu) nltk.download('wordnet')
+#nlp.stanford.edu/software/CRF-NER.shtml#Download
+
+spaCy
+pip install -U spaCy
+python -m spacy download en
