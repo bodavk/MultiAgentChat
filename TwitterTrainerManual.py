@@ -55,11 +55,4 @@ class TwitterTrainerManual(trainers.Trainer):
     def train(self):
         statements = self.get_statements()
         self.chatbot.storage.create_many(statements)
-       # for statement in statements:
-       #     self.chatbot.storage.create(
-       #         text=statement.text,
-         #       in_response_to=statement.in_response_to,
-                #conversation=statement.conversation,
-          #      tags=statement.tags
-         #   )
 
