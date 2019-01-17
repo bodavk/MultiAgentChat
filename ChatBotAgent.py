@@ -6,6 +6,13 @@ from spade.agent import Agent
 from spade.behaviour import OneShotBehaviour
 from spade.message import Message
 
+#TODO change agent behavior to be a FiniteStateMachine
+#TODO machine should have send state and receive state 
+# -> receive should only check if the other agent is done training the set
+	#TODO first check if there already exists an answer to the user's question and try to answer
+	#TODO if it doesn't exist send it to the other agent and wait for done signal
+
+
 class ChattingAgent(Agent):
 	messageToSend = ""
 	class InformBehavior(OneShotBehaviour):
