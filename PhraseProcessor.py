@@ -40,19 +40,19 @@ def get_most_common_words(list_phrases, list_entitites, list_of_important_words)
 	if(keywords.count != 0):
 		for entity in list_entitites:
 			if (not any(entity.text in keyword.text for keyword in keywords)):
-				keywords.append(entity)
+				keywords.append(entity.text)
 	elif (list_entitites.count != 0):
 		for entity in list_entitites:
-			keywords.append(entity)
+			keywords.append(entity.text)
 	if(len(list_of_important_words) != 0):
 		for important_word in list_of_important_words:
-			if important_word not in keywords:
-				keywords.append(important_word)
+			if important_word.text not in keywords:
+				keywords.append(important_word.text)
 	return keywords
 
 if __name__ == "__main__":
 	phrase = "what's the tommorrow's weather in miami or rather tell me more about the trump's wall"
-	print (phrase)
+	#print (phrase)
 	keywords = extract_keywords(phrase)
-	displacy.serve(keywords, style='dep')
-	print (keywords)
+	#displacy.serve(keywords, style='dep')
+	#print (keywords)

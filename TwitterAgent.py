@@ -2,7 +2,7 @@
 from spade import agent
 import time
 import PhraseProcessor
-import TwitterTrainer
+import TwitterPostsTrainer
 from spade.agent import Agent
 from spade.behaviour import FSMBehaviour, State
 from spade.message import Message
@@ -26,13 +26,12 @@ class RecieveState(State):
 				print("Message received with content: {}".format(self.msg.body))				
 				#get keywords from the search phrase
 				keywords = PhraseProcessor.extract_keywords(self.msg.body)
-				print (keywords)				
-				for keyword in keywords:
-					TwitterTrainer.TrainForPhrase(keyword)
-				#search twitter for those keywords
-				#train with twitter responses (learn from those posts via API or create messages with links to original tweets)				
-				self.set_next_state(SEND_STATE)
-				#if success set flag
+				#print (keywords)	
+				phrase = ' '.join(keywords)		
+				
+				#TODO instead of searching word by word it should join it into some kind of a sentence and train the classifier
+				TwitterPostsTrainer.TrainForPhrase(phrase)
+		self.set_next_state(SEND_STATE)		
 
 class SendState(State):
 	async def run(self):

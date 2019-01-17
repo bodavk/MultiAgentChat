@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 from chatterbot import ChatBot
 from settings import TWITTER
+from TwitterTrainerManual import TwitterTrainerManual
 import logging
 
 
 # Comment out the following line to disable verbose logging
 #logging.basicConfig(level=logging.INFO)
 def TrainForPhrase(parsed_phrase):
-    chatbot = ChatBot(
+    bot = ChatBot(
         "VASMultiAgentSystem",
         logic_adapters=[
             "chatterbot.logic.BestMatch"
@@ -18,9 +19,10 @@ def TrainForPhrase(parsed_phrase):
         twitter_consumer_secret=TWITTER["CONSUMER_SECRET"],
         twitter_access_token_key=TWITTER["ACCESS_TOKEN"],
         twitter_access_token_secret=TWITTER["ACCESS_TOKEN_SECRET"]
-        #trainer="chatterbot.trainers.TwitterTrainer"
+        
     )
-    #chatbot.train(parsed_phrase)
-    #chatbot.logger.info('Trained database generated successfully!')
-    chatbot.set_trainer(chatterbot.trainers.TwitterTrainer, parsed_phrase)
-    chatbot.train()
+    #bot.set_trainer(TwitterTrainerManual,parsed_phrase=parsed_phrase)
+    #bot.train()
+    trainer = TwitterTrainerManual(bot, parsed_phrase=parsed_phrase)
+    trainer.train()
+    print("successful training")
