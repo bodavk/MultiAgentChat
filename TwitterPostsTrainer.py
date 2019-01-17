@@ -9,9 +9,8 @@ def TrainForPhrase(parsed_keywords):
         "VASMultiAgentSystem",
         logic_adapters=[
             "chatterbot.logic.BestMatch"
-        ],
-        database="./twitter-database.db",
-        input_adapter = "chatterbot.input.VariableInputTypeAdapter"        
+        ]
+        #database="./twitter-database.db"        
     )
     trainer = TwitterTrainerManual(bot, parsed_keywords=parsed_keywords,
         twitter_consumer_key=TWITTER["CONSUMER_KEY"],

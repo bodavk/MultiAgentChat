@@ -1,6 +1,8 @@
 from chatterbot.conversation import Statement
 from chatterbot import trainers
+from chatterbot import utils
 from TwitterSearch import *
+
 class TwitterTrainerManual(trainers.Trainer):
     """
     Allows the chat bot to be trained using data
@@ -13,7 +15,7 @@ class TwitterTrainerManual(trainers.Trainer):
 
     def __init__(self, chatbot, **kwargs):
         super().__init__(chatbot, **kwargs)
-
+        self.max_number_of_tweets = 10
         self.chatbot = chatbot
         self.keywords = kwargs.get('parsed_keywords')
         self.ts = TwitterSearch(
@@ -31,29 +33,33 @@ class TwitterTrainerManual(trainers.Trainer):
 
         search_keywords = self.keywords
         search_phrase = ' '.join(search_keywords)
-        
-        #TODO search twitter for phrases
+          
         tso = TwitterSearchOrder()
         tso.set_keywords(search_keywords)
+        #tso.set_keywords([search_phrase])
         tso.set_language('en')
         tso.set_include_entities(False)
-
+        counter = 0
         for tweet in self.ts.search_tweets_iterable(tso):
-            tweet_text = tweet['text']
-            statement = Statement(text=tweet_text, in_response_to=search_phrase)
-            statements.append(statement)
-        #TODO set constant number of tweets
-        #TODO clean up tweets from @symbols
+            counter += 1
+            if (counter < self.max_number_of_tweets):
+                try:
+                    tweet_text = tweet['text']
+                    statement = Statement(text=tweet_text, in_response_to=search_phrase, conversation='training')
+                    statements.append(statement)
+                except KeyError:
+                    return "Tweet is not correct"
+        #TODO clean up tweets from @symbols or make the tweets simpler to read, or less awkward as responses
         return statements
 
     def train(self):
-        for _ in range(0, 10):
-            statements = self.get_statements()
-            for statement in statements:
-                self.chatbot.storage.create(
-                    text=statement.text,
-                    in_response_to=statement.in_response_to,
-                    conversation=statement.conversation,
-                    tags=statement.tags
-                )
+        statements = self.get_statements()
+        self.chatbot.storage.create_many(statements)
+       # for statement in statements:
+       #     self.chatbot.storage.create(
+       #         text=statement.text,
+         #       in_response_to=statement.in_response_to,
+                #conversation=statement.conversation,
+          #      tags=statement.tags
+         #   )
 

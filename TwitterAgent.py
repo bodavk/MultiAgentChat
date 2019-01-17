@@ -56,15 +56,13 @@ class TwitterAgent(Agent):
 		behaviour.add_transition(source=RECIEVE_STATE, dest=SEND_STATE)
 		behaviour.add_transition(source=SEND_STATE, dest=RECIEVE_STATE)
 		template = Template()
-		template.to="twitterAgent@localhost"	
-		#template.sender="chattingAgent@localhost"
+		template.to="twitterAgent@localhost"
 		template.set_metadata("performative","inform")
 		template.set_metadata("ontology","research-theme")
 		self.add_behaviour(behaviour, template)
 
 if __name__ == "__main__":
 	twitterAgent = TwitterAgent("twitterAgent@localhost", "twitterPassword")
-	#print("TwitterAgent running and waiting for requests")
 	twitterAgent.start()
 	while twitterAgent.is_alive():
 		try:
