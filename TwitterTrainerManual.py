@@ -13,7 +13,7 @@ class TwitterTrainerManual(trainers.Trainer):
     def __init__(self, chatbot, **kwargs):
         super().__init__(chatbot, **kwargs)
         from twitter import Api as TwitterApi
-
+        self.chatbot = chatbot
         self.phrase = kwargs.get('parsed_phrase')
         #self.phrase = parsed_phrase
         self.api = TwitterApi(
@@ -32,7 +32,7 @@ class TwitterTrainerManual(trainers.Trainer):
 
         random_word = self.phrase
         #TODO fix, code breaks somewhere here.
-        self.chatbot.logger.info('Requesting 50 tweets containing the phrase {}'.format(random_word))
+        #self.chatbot.logger.info('Requesting 50 tweets containing the phrase {}'.format(random_word))
         tweets = self.api.GetSearch(term=random_word, count=20)
         for tweet in tweets:
             statement = Statement(text=tweet.text)
@@ -44,7 +44,7 @@ class TwitterTrainerManual(trainers.Trainer):
                 except TwitterError as error:
                     self.chatbot.logger.warning(str(error))
 
-        self.chatbot.logger.info('Adding {} tweets with responses'.format(len(statements)))
+        #self.chatbot.logger.info('Adding {} tweets with responses'.format(len(statements)))
         return statements
 
     def train(self):

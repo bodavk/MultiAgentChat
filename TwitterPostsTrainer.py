@@ -23,6 +23,10 @@ def TrainForPhrase(parsed_phrase):
     )
     #bot.set_trainer(TwitterTrainerManual,parsed_phrase=parsed_phrase)
     #bot.train()
-    trainer = TwitterTrainerManual(bot, parsed_phrase=parsed_phrase)
+    trainer = TwitterTrainerManual(bot, parsed_phrase=parsed_phrase,
+        twitter_consumer_key=TWITTER["CONSUMER_KEY"],
+        twitter_consumer_secret=TWITTER["CONSUMER_SECRET"],
+        twitter_access_token_key=TWITTER["ACCESS_TOKEN"],
+        twitter_access_token_secret=TWITTER["ACCESS_TOKEN_SECRET"])
     trainer.train()
     print("successful training")
