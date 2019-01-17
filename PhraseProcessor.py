@@ -39,7 +39,7 @@ def get_most_common_words(list_phrases, list_entitites, list_of_important_words)
 	#if keywords isn't empty check if entity already made the list, else just add it.
 	if(keywords.count != 0):
 		for entity in list_entitites:
-			if (not any(entity.text in keyword.text for keyword in keywords)):
+			if (not any(entity.text in keyword for keyword in keywords)):
 				keywords.append(entity.text)
 	elif (list_entitites.count != 0):
 		for entity in list_entitites:

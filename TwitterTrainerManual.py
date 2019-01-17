@@ -1,5 +1,6 @@
 from chatterbot.conversation import Statement
 from chatterbot import trainers
+from TwitterSearch import *
 class TwitterTrainerManual(trainers.Trainer):
     """
     Allows the chat bot to be trained using data
@@ -12,39 +13,37 @@ class TwitterTrainerManual(trainers.Trainer):
 
     def __init__(self, chatbot, **kwargs):
         super().__init__(chatbot, **kwargs)
-        from twitter import Api as TwitterApi
+
         self.chatbot = chatbot
-        self.phrase = kwargs.get('parsed_phrase')
-        #self.phrase = parsed_phrase
-        self.api = TwitterApi(
+        self.keywords = kwargs.get('parsed_keywords')
+        self.ts = TwitterSearch(
             consumer_key=kwargs.get('twitter_consumer_key'),
             consumer_secret=kwargs.get('twitter_consumer_secret'),
-            access_token_key=kwargs.get('twitter_access_token_key'),
+            access_token=kwargs.get('twitter_access_token_key'),
             access_token_secret=kwargs.get('twitter_access_token_secret')
         )
 
     def get_statements(self):
         """
         Returns list of statements from the API.
-        """
-        from twitter import TwitterError
+        """       
         statements = []
 
-        random_word = self.phrase
-        #TODO fix, code breaks somewhere here.
-        #self.chatbot.logger.info('Requesting 50 tweets containing the phrase {}'.format(random_word))
-        tweets = self.api.GetSearch(term=random_word, count=20)
-        for tweet in tweets:
-            statement = Statement(text=tweet.text)
-            if tweet.in_reply_to_status_id:
-                try:
-                    # korisnikovo pitanje umjesto status.text
-                    statement.in_response_to = self.phrase
-                    statements.append(statement)
-                except TwitterError as error:
-                    self.chatbot.logger.warning(str(error))
+        search_keywords = self.keywords
+        search_phrase = ' '.join(search_keywords)
+        
+        #TODO search twitter for phrases
+        tso = TwitterSearchOrder()
+        tso.set_keywords(search_keywords)
+        tso.set_language('en')
+        tso.set_include_entities(False)
 
-        #self.chatbot.logger.info('Adding {} tweets with responses'.format(len(statements)))
+        for tweet in self.ts.search_tweets_iterable(tso):
+            tweet_text = tweet['text']
+            statement = Statement(text=tweet_text, in_response_to=search_phrase)
+            statements.append(statement)
+        #TODO set constant number of tweets
+        #TODO clean up tweets from @symbols
         return statements
 
     def train(self):

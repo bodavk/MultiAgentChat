@@ -27,10 +27,10 @@ class RecieveState(State):
 				#get keywords from the search phrase
 				keywords = PhraseProcessor.extract_keywords(self.msg.body)
 				#print (keywords)	
-				phrase = ' '.join(keywords)		
+				#phrase = ' '.join(keywords)		
 				
 				#TODO instead of searching word by word it should join it into some kind of a sentence and train the classifier
-				TwitterPostsTrainer.TrainForPhrase(phrase)
+				TwitterPostsTrainer.TrainForPhrase(keywords)
 		self.set_next_state(SEND_STATE)		
 
 class SendState(State):
