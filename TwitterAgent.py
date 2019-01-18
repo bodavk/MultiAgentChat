@@ -45,8 +45,6 @@ class SendState(State):
 		await self.send(msg)
 		self.set_next_state(RECIEVE_STATE)
 
-
-
 class TwitterAgent(Agent):	
 	def setup(self):
 		print("TwitterAgent created!")
