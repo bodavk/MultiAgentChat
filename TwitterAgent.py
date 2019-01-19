@@ -11,7 +11,7 @@ from spade.template import Template
 RECIEVE_STATE = "RECIEVE_STATE"
 SEND_STATE = "SEND_STATE"
 END_STATE = "END_STATE"
-
+user_message = "failure"
 class BotBehaviour(FSMBehaviour):
 	async def on_start(self):
 		print(f"agent starting at the initial state {self.current_state}")
@@ -20,29 +20,25 @@ class BotBehaviour(FSMBehaviour):
 
 class RecieveState(State):
 	async def run(self):
-		print("Receive state:")
-		self.msg = await self.receive(timeout=10)
+		self.msg = await self.receive(timeout=15)
 		if(self.msg):
+				global user_message
 				print("Message received with content: {}".format(self.msg.body))				
-				#get keywords from the search phrase
 				keywords = PhraseProcessor.extract_keywords(self.msg.body)
-				#print (keywords)	
-				#phrase = ' '.join(keywords)		
-				
-				#TODO instead of searching word by word it should join it into some kind of a sentence and train the classifier
-				TwitterPostsTrainer.TrainForPhrase(keywords)
+				user_message = self.msg.body			
+				TwitterPostsTrainer.TrainForPhrase(keywords, user_message)
 		self.set_next_state(SEND_STATE)		
 
 class SendState(State):
 	async def run(self):
-		print("Send state:")
-		#if flag set to true send, else don't
-		msg = Message(to = "chattingAgent@localhost")
-		msg.sender = "twitterAgent@localhost"
-		msg.body = "Done"
-		msg.set_metadata("performative","inform")
-		msg.set_metadata("ontology","research-theme")		
-		await self.send(msg)
+		global user_message
+		if (user_message != "failure"):
+			msg = Message(to = "chattingAgent@localhost")
+			msg.sender = "twitterAgent@localhost"
+			msg.body = user_message
+			msg.set_metadata("performative","inform")
+			msg.set_metadata("ontology","research-theme")		
+			await self.send(msg)
 		self.set_next_state(RECIEVE_STATE)
 
 class TwitterAgent(Agent):	
