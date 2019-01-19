@@ -34,16 +34,15 @@ class TwitterTrainerManual(trainers.Trainer):
         statements = []
 
         search_keywords = self.keywords
-        #search_phrase = ' '.join(search_keywords)
         search_phrase = self.phrase 
         tso = TwitterSearchOrder()
         tso.set_keywords(search_keywords)
-        #tso.set_keywords([search_phrase])
         tso.set_language('en')
         tso.set_include_entities(True)
         tso.set_count(50)
         for tweet in self.ts.search_tweets_iterable(tso):
             try:
+                #make sure the tweet message is intact and that it isn't a retweet so that the text is readable
                 if (tweet['truncated'] == False and 'retweeted_status' not in tweet):
                     tweet_text = tweet['text']
                     statement_search_text = self.chatbot.storage.tagger.get_bigram_pair_string(tweet_text)

@@ -74,7 +74,6 @@ class SendState(State):
 				msg.set_metadata("performative","inform")
 				msg.set_metadata("ontology","research-theme")		
 				await self.send(msg)
-				#print ("Message from {} sent, content:{}".format(msg.sender, msg.body))
 				print("One moment please, I'm trying to think of an anwser")
 				self.set_next_state(RECIEVE_STATE)
 			else:
@@ -101,7 +100,7 @@ class ChattingAgent(Agent):
 		behaviour.add_transition(source=RECIEVE_STATE, dest=RECIEVE_STATE)
 		
 		template = Template()
-		template.to="chattingAgent@localhost"
+		template.to="chattingAgent@localhost"		
 		template.set_metadata("performative","inform")
 		template.set_metadata("ontology","research-theme")
 		self.add_behaviour(behaviour, template)
