@@ -17,9 +17,8 @@ class TwitterTrainerManual(trainers.Trainer):
         super().__init__(chatbot, **kwargs)
         self.max_number_of_tweets = 10
         self.chatbot = chatbot
-        self.keywords = kwargs.get('parsed_keywords') #TODO add parsed_phrase as well (full sentence parsed to the agent)
+        self.keywords = kwargs.get('parsed_keywords') 
         self.phrase = kwargs.get('parsed_phrase')
-        #TODO set full phrase as a  in response to
         self.ts = TwitterSearch(
             consumer_key=kwargs.get('twitter_consumer_key'),
             consumer_secret=kwargs.get('twitter_consumer_secret'),

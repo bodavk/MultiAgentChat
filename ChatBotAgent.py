@@ -48,8 +48,6 @@ class RecieveState(State):
 			#if message isn't empty, and has passed the template it should be the message we need	
 			if self.msg.body != "" and self.msg.body!="failure":
 				response = bot.get_response(user_question)
-				#while(response.confidence < 0.1 and response.confidence!=0):
-				#	response=bot.get_response(user_question)
 				print (response)
 				self.set_next_state(SEND_STATE)	
 			else:

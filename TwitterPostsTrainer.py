@@ -8,8 +8,7 @@ bot = ChatBot(
     "VASMultiAgentSystem",
     logic_adapters=[
         "chatterbot.logic.BestMatch"
-    ]
-    #database="./twitter-database.db"        
+    ]     
 )
 
 def TrainForPhrase(parsed_keywords, parsed_phrase):
